@@ -25,7 +25,11 @@ class Books extends Model
         'is_available' => 'boolean',
         'price' => 'decimal:2'
     ];
-
-    
+    /**
+     * Get the transactions for the book.
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'book_id');
+    }
 }
-

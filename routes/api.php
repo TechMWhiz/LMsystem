@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BooksController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('books', BooksController::class);
 
     // Transactions routes
-    //Route::apiResource('transactions', TransactionsController::class);
-    //Route::get('/user/transactions', [TransactionsController::class, 'userTransactions']);
+    Route::apiResource('transactions', TransactionController::class);
+    Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
 
     // Admin routes
     Route::middleware('admin')->group(function () {
