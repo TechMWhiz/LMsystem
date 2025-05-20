@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-        /**
+    /**
      * Register a new user.
      */
     public function register(Request $request): JsonResponse
@@ -78,8 +78,9 @@ class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
-
+        if ($request->user()) {
+        $request->user()->tokens()->delete();
+        }
         return response()->json(['message' => 'Successfully logged out']);
     }
 
@@ -90,5 +91,4 @@ class AuthController extends Controller
     {
         return response()->json(['data' => $request->user()]);
     }
-}
-
+} 
