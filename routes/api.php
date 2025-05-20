@@ -4,9 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BooksController;
+use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AdminController;
-use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\DashboardController;
 
 
 /*
@@ -14,21 +15,22 @@ use App\Http\Controllers\Api\TransactionController;
 | API Routes
 |--------------------------------------------------------------------------
 */
-
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
+Route::prefix('dashboard')->group(function () {
+    Route::get('/stats', [DashboardController::class, 'getStats']);
+    Route::get('/recent-borrowings', [DashboardController::class, 'getRecentBorrowings']);
+    Route::get('/popular-books', [DashboardController::class, 'getPopularBooks']);
 });
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-
 // Protected routes
-//Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     // Auth routes
-    //Route::post('/logout', [AuthController::class, 'logout']);
-   // Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'user']);
 
     // User profile routes
     Route::get('/profile', [UserController::class, 'profile']);
@@ -43,12 +45,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
     // Transactions routes
     Route::apiResource('transactions', TransactionController::class);
-   // Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
-    //Route::get('/transaction', [TransactionController::class, 'index']);
+    Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
 
     // Admin routes
-   // Route::middleware('admin')->group(function () {
-
+    Route::middleware('admin')->group(function () {
         // Book management
         Route::post('/books', [BooksController::class, 'store']);
         Route::put('/books/{book}', [BooksController::class, 'update']);
@@ -65,8 +65,8 @@ Route::post('/login', [AuthController::class, 'login']);
         
         // Dashboard
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-    
-
+    });
+});
 
 Route::get('/test-connection', function () {
     return response()->json([
