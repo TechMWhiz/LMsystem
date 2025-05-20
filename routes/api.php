@@ -8,13 +8,14 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\TransactionController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -22,11 +23,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+
 // Protected routes
-Route::middleware('auth:sanctum')->group(function () {
+//Route::middleware('auth:sanctum')->group(function () {
     // Auth routes
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'user']);
+    //Route::post('/logout', [AuthController::class, 'logout']);
+   // Route::get('/user', [AuthController::class, 'user']);
 
     // User profile routes
     Route::get('/profile', [UserController::class, 'profile']);
@@ -41,10 +43,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Transactions routes
     Route::apiResource('transactions', TransactionController::class);
-    Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
+   // Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
+    //Route::get('/transaction', [TransactionController::class, 'index']);
 
     // Admin routes
-    Route::middleware('admin')->group(function () {
+   // Route::middleware('admin')->group(function () {
+
         // Book management
         Route::post('/books', [BooksController::class, 'store']);
         Route::put('/books/{book}', [BooksController::class, 'update']);
@@ -61,8 +65,8 @@ Route::middleware('auth:sanctum')->group(function () {
         
         // Dashboard
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
-    });
-});
+    
+
 
 Route::get('/test-connection', function () {
     return response()->json([

@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            if (!Schema::hasColumn('transactions', 'borrow_date')) {
-                $table->dateTime('borrow_date')->after('status');
-            }
-            if (!Schema::hasColumn('transactions', 'return_date')) {
-                $table->dateTime('return_date')->nullable()->after('due_date');
-            }
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('book_id')->constrained()->onDelete('cascade');
+            $table->enum('type', ['borrow', 'return']);
+            $table->enum('status', ['active', 'completed', 'cancelled'])->default('active');
+            $table->dateTime('borrow_date');
+            $table->dateTime('due_date');
+            $table->dateTime('return_date')->nullable();
+            $table->decimal('fine_amount', 8, 2)->default(0);
+            $table->timestamps();
         });
     }
 
@@ -26,8 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn(['borrow_date', 'return_date']);
-        });
+        Schema::dropIfExists('transactions');
     }
 }; 

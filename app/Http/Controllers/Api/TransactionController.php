@@ -56,7 +56,7 @@ class TransactionController extends Controller
             $book->update(['is_available' => false]);
         }
 
-        return response()->json(['data' => $transaction], 201);
+        return response()->json(['data' => $transaction], 200);
     }
 
     /**
