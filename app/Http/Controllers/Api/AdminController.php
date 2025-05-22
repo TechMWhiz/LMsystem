@@ -18,7 +18,7 @@ class AdminController extends Controller
      */
     public function users(): JsonResponse
     {
-        $users = User::with('transaction')->get();
+        $users = User::with('transactions')->get();
         return response()->json(['data' => $users]);
     }
 
