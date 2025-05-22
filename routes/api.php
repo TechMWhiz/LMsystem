@@ -8,19 +8,22 @@ use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\DashboardController;
-
+use App\Http\Middleware\AdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 */
+
+// Dashboard Routes
 Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
 Route::prefix('dashboard')->group(function () {
     Route::get('/stats', [DashboardController::class, 'getStats']);
     Route::get('/recent-borrowings', [DashboardController::class, 'getRecentBorrowings']);
     Route::get('/popular-books', [DashboardController::class, 'getPopularBooks']);
 });
+
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -47,13 +50,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('transactions', TransactionController::class);
     Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
 
-    // Admin routes
-    Route::middleware('admin')->group(function () {
+    // Admin routes with explicit middleware reference
+    Route::middleware([AdminMiddleware::class])->group(function () {
         // Book management
         Route::post('/books', [BooksController::class, 'store']);
         Route::put('/books/{book}', [BooksController::class, 'update']);
         Route::delete('/books/{book}', [BooksController::class, 'destroy']);
-        
+
         // User management
         Route::get('/admin/users', [AdminController::class, 'users']);
         Route::post('/admin/users', [AdminController::class, 'createUser']);
@@ -68,6 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
+// Connection test route
 Route::get('/test-connection', function () {
     return response()->json([
         'message' => 'Backend is connected successfully!',
