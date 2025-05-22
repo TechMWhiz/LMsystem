@@ -1,32 +1,32 @@
-   [build]
-   builder = "nixpacks"
-   buildCommand = "composer install --no-dev"
+[build]
+builder = "nixpacks"
+buildCommand = "composer install --no-dev"
 
-   [deploy]
-   startCommand = "bash -c 'chmod -R 775 storage bootstrap/cache && php artisan storage:link --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=$PORT --no-reload'"
-   healthcheckPath = "/api/health"
-   healthcheckTimeout = 300
+[deploy]
+startCommand = "php artisan serve --host=0.0.0.0 --port=8080 --no-reload"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 300
 
-   [phases.setup]
-   nixPkgs = [
-       "php82",
-       "php82Extensions.curl",
-       "php82Extensions.mbstring",
-       "php82Extensions.xml",
-       "php82Extensions.zip",
-       "php82Extensions.pdo",
-       "php82Extensions.pdo_mysql",
-       "php82Extensions.opcache",
-       "php82Extensions.sodium",
-       "php82Extensions.fileinfo",
-       "php82Extensions.gd"
-   ]
+[phases.setup]
+nixPkgs = [
+    "php82",
+    "php82Extensions.curl",
+    "php82Extensions.mbstring",
+    "php82Extensions.xml",
+    "php82Extensions.zip",
+    "php82Extensions.pdo",
+    "php82Extensions.pdo_mysql",
+    "php82Extensions.opcache",
+    "php82Extensions.sodium",
+    "php82Extensions.fileinfo",
+    "php82Extensions.gd"
+]
 
-   [phases.install]
-   cmds = [
-       "mkdir -p storage/framework/{sessions,views,cache}",
-       "chmod -R 775 storage bootstrap/cache",
-       "php artisan key:generate --force",
-       "php artisan config:clear",
-       "php artisan cache:clear"
-   ]
+[phases.install]
+cmds = [
+    "mkdir -p storage/framework/{sessions,views,cache}",
+    "chmod -R 775 storage bootstrap/cache",
+    "php artisan key:generate --force",
+    "php artisan config:clear",
+    "php artisan cache:clear"
+]
