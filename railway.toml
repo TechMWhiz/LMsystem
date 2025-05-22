@@ -1,9 +1,9 @@
 [build]
 builder = "nixpacks"
-buildCommand = "composer install --no-dev"
+buildCommand = "composer install --no-dev && php artisan key:generate --force"
 
 [deploy]
-startCommand = "php artisan storage:link && php artisan config:cache && php artisan route:cache && php artisan view:cache && vendor/bin/heroku-php-apache2 -F config/php-fpm.conf public/"
+startCommand = "chmod -R 775 storage bootstrap/cache && php artisan storage:link && php artisan config:cache && php artisan route:cache && php artisan view:cache && vendor/bin/heroku-php-apache2 -F config/php-fpm.conf public/"
 healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "on-failure"
@@ -20,5 +20,13 @@ nixPkgs = [
     "php82Extensions.pdo",
     "php82Extensions.pdo_mysql",
     "php82Extensions.opcache",
-    "php82Extensions.sodium"
+    "php82Extensions.sodium",
+    "php82Extensions.fileinfo",
+    "php82Extensions.gd"
+]
+
+[phases.install]
+cmds = [
+    "mkdir -p storage/framework/{sessions,views,cache}",
+    "chmod -R 775 storage bootstrap/cache"
 ] 

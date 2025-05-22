@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-apache2 -F config/php-fpm.conf public/ 
+web: bash -c "chmod -R 775 storage bootstrap/cache && vendor/bin/heroku-php-apache2 -F config/php-fpm.conf public/" 
