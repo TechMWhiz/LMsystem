@@ -17,7 +17,7 @@ use App\Http\Middleware\AdminMiddleware;
 */
 
 // Dashboard Routes
-Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
+//Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
 Route::prefix('dashboard')->group(function () {
     Route::get('/stats', [DashboardController::class, 'getStats']);
     Route::get('/recent-borrowings', [DashboardController::class, 'getRecentBorrowings']);
@@ -49,6 +49,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Transactions routes
     Route::apiResource('transactions', TransactionController::class);
     Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
+    Route::post('/transaction/{book}', [TransactionController::class, 'handleTransaction']);
+    Route::post('/borrow/{book}', [TransactionController::class, 'borrowBook']);
+    Route::post('/return/{book}', [TransactionController::class, 'returnBook']);
 
     // Admin routes with explicit middleware reference
     Route::middleware([AdminMiddleware::class])->group(function () {
@@ -67,7 +70,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/transactions', [AdminController::class, 'transactions']);
         
         // Dashboard
-        Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+        Route::get('/admin/dashboard', [DashboardController::class, 'getStats']);
     });
 });
 
