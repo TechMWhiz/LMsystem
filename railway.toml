@@ -3,7 +3,7 @@
    buildCommand = "composer install --no-dev"
 
    [deploy]
-   startCommand = "bash -c 'chmod -R 775 storage bootstrap/cache && php artisan storage:link --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=$PORT'"
+   startCommand = "bash -c 'chmod -R 775 storage bootstrap/cache && php artisan storage:link --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan serve --host=0.0.0.0 --port=$PORT --no-reload'"
    healthcheckPath = "/api/health"
    healthcheckTimeout = 300
 
@@ -26,5 +26,7 @@
    cmds = [
        "mkdir -p storage/framework/{sessions,views,cache}",
        "chmod -R 775 storage bootstrap/cache",
-       "php artisan key:generate --force"
+       "php artisan key:generate --force",
+       "php artisan config:clear",
+       "php artisan cache:clear"
    ]
