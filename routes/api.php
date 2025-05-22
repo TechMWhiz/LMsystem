@@ -81,3 +81,15 @@ Route::get('/test-connection', function () {
         'timestamp' => now()
     ]);
 });
+
+//ADDED FOR THE DEPLOYMENT ANGELAAAA
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'healthy',
+        'timestamp' => now()->toIso8601String()
+    ]);
+});
