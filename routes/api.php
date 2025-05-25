@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\DashboardController;
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/books', [BookController::class, 'index']);
+Route::get('/books', [BooksController::class, 'index']);
 
 // Test connection
 Route::get('/test-connection', function () {
@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Book CRUD
 
      Route::apiResource('books', BooksController::class)->except(['index']);
+
     // Transactions CRUD
     Route::apiResource('transactions', TransactionController::class);
     Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
