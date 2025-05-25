@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Books;
+use App\Models\Book;
 use Illuminate\Database\Seeder;
 
 class BookSeeder extends Seeder
@@ -13,7 +13,7 @@ class BookSeeder extends Seeder
     public function run(): void
     {
         // Create some predefined books
-        $books = [
+        $book = [
             [
                 'title' => 'The Great Gatsby',
                 'author' => 'F. Scott Fitzgerald',
@@ -43,11 +43,11 @@ class BookSeeder extends Seeder
             ],
         ];
 
-        foreach ($books as $book) {
-            Books::create($book);
+        foreach ($book as $book) {
+            Book::create($book);
         }
 
         // Create additional random books
-        Books::factory(10)->create();
+        Book::factory(10)->create();
     }
 } 

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Transaction;
 use App\Models\User;
-use App\Models\Books;
+use App\Models\Book;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
@@ -16,7 +16,7 @@ class TransactionSeeder extends Seeder
     public function run(): void
     {
         $users = User::where('role', 'user')->get();
-        $books = Books::all();
+        $books = Book::all();
 
         // Create some sample transactions
         foreach ($users as $user) {
