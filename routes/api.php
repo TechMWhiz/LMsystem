@@ -49,9 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile/fine-history', [UserController::class, 'fineHistory']);
 
     // Book CRUD
-    
-    Route::apiResource('books', BooksController::class);
-    
+
+     Route::apiResource('books', BooksController::class)->except(['index']);
     // Transactions CRUD
     Route::apiResource('transactions', TransactionController::class);
     Route::get('/user/transactions', [TransactionController::class, 'userTransactions']);
