@@ -19,10 +19,14 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/books', [BooksController::class, 'index']);
 Route::apiResource('books', BooksController::class);
+Route::get('/user', [AuthController::class, 'user']);
 
-Route::get('/users', function () {
-    return \App\Models\User::all();
-});
+Route::get('/profile', [UserController::class, 'profile']);
+Route::put('/profile', [UserController::class, 'updateProfile']);
+Route::get('/profile/borrowing-history', [UserController::class, 'borrowingHistory']);
+Route::get('/profile/current-borrowings', [UserController::class, 'currentBorrowings']);
+Route::get('/profile/overdue-books', [UserController::class, 'overdueBooks']);
+    Route::get('/profile/fine-history', [UserController::class, 'fineHistory']);
 
 // Test connection
 Route::get('/test-connection', function () {
