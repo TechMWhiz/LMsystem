@@ -4,19 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use App\Models\Books;
+use App\Models\Book;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class BooksController extends Controller
+class BookController extends Controller
 {
     /**
      * Display a listing of the books.
      */
     public function index(): JsonResponse
     {
-        $books = Books::all();
-        return response()->json(['data' => $books]);
+        $book = Book::all();
+        return response()->json(['data' => $book]);
     }
 
     /**
@@ -37,14 +37,14 @@ class BooksController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $book = Books::create($request->all());
+        $book = Book::create($request->all());
         return response()->json(['data' => $book], 201);
     }
 
     /**
      * Display the specified book.
      */
-    public function show(Books $book): JsonResponse
+    public function show(Book $book): JsonResponse
     {
         return response()->json(['data' => $book]);
     }
@@ -52,12 +52,12 @@ class BooksController extends Controller
     /**
      * Update the specified book in storage.
      */
-    public function update(Request $request, Books $book): JsonResponse
+    public function update(Request $request, Book $book): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
             'author' => 'sometimes|required|string|max:255',
-            'isbn' => 'sometimes|required|string|unique:books,isbn,' . $book->id,
+            'isbn' => 'sometimes|required|string|unique:book,isbn,' . $book->id,
             'published_date' => 'sometimes|required|date',
             'description' => 'sometimes|required|string',
             'price' => 'sometimes|required|numeric|min:0',
@@ -75,7 +75,7 @@ class BooksController extends Controller
     /**
      * Remove the specified book from storage.
      */
-    public function destroy(Books $book): JsonResponse
+    public function destroy(Book $book): JsonResponse
     {
         $book->delete();
         return response()->json(null, 204);
