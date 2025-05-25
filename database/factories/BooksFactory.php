@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Book;
+use App\Models\Books;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Book>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Books>
  */
-class BookFactory extends Factory
+class BooksFactory extends Factory
 {
     /**
      * Define the model's default state.

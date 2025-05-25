@@ -4,19 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use App\Models\Book;
+use App\Models\Books;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class BookController extends Controller
+class BooksController extends Controller
 {
     /**
      * Display a listing of the books.
      */
     public function index(): JsonResponse
     {
-        $book = Book::all();
-        return response()->json(['data' => $book]);
+        $books = Books::all();
+        return response()->json(['data' => $books]);
     }
 
     /**
@@ -37,27 +37,33 @@ class BookController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $book = Book::create($request->all());
-        return response()->json(['data' => $book], 201);
+        $books = Books::create($request->all());
+        return response()->json(['data' => $books], 201);
     }
 
     /**
      * Display the specified book.
      */
-    public function show(Book $book): JsonResponse
-    {
-        return response()->json(['data' => $book]);
+   public function show($id)
+{
+    $books = Books::find($id);
+
+    if (!$books) {
+        return response()->json(['message' => 'Book not found'], 404);
     }
+
+    return response()->json($books);
+}
 
     /**
      * Update the specified book in storage.
      */
-    public function update(Request $request, Book $book): JsonResponse
+    public function update(Request $request, Books $book): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
             'author' => 'sometimes|required|string|max:255',
-            'isbn' => 'sometimes|required|string|unique:book,isbn,' . $book->id,
+            'isbn' => 'sometimes|required|string|unique:books,isbn,' . $book->id,
             'published_date' => 'sometimes|required|date',
             'description' => 'sometimes|required|string',
             'price' => 'sometimes|required|numeric|min:0',
@@ -75,7 +81,7 @@ class BookController extends Controller
     /**
      * Remove the specified book from storage.
      */
-    public function destroy(Book $book): JsonResponse
+    public function destroy(Books $book): JsonResponse
     {
         $book->delete();
         return response()->json(null, 204);
