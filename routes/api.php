@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\DashboardController;
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/books', [BookController::class, 'index']);
 
 // Test connection
 Route::get('/test-connection', function () {
@@ -48,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile/fine-history', [UserController::class, 'fineHistory']);
 
     // Book CRUD
+    
     Route::apiResource('books', BooksController::class);
     
     // Transactions CRUD
