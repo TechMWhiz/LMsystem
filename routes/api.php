@@ -43,7 +43,7 @@ Route::prefix('dashboard')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     // Auth
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'user']);
+    //Route::get('/user', [AuthController::class, 'user']);
 
     // User profile
     Route::get('/profile', [UserController::class, 'profile']);
