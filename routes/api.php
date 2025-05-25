@@ -18,6 +18,11 @@ use App\Http\Controllers\Api\DashboardController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/books', [BooksController::class, 'index']);
+Route::apiResource('books', BooksController::class);
+
+Route::get('/users', function () {
+    return \App\Models\User::all();
+});
 
 // Test connection
 Route::get('/test-connection', function () {
@@ -50,7 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Book CRUD
 
-     Route::apiResource('books', BooksController::class)->except(['index']);
+    // Route::apiResource('books', BooksController::class)->except(['index']);
 
     // Transactions CRUD
     Route::apiResource('transactions', TransactionController::class);
