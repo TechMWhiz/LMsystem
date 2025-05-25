@@ -17,10 +17,13 @@ use App\Http\Controllers\Api\DashboardController;
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+//books
 Route::get('/books', [BooksController::class, 'index']);
 Route::apiResource('books', BooksController::class);
-Route::get('/user', [AuthController::class, 'user']);
 
+//users
+Route::get('/user', [AuthController::class, 'user']);
 Route::get('/users', function () {
     return response()->json([
         'data' => \App\Models\User::all()

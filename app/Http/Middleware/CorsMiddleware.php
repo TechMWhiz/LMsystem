@@ -10,20 +10,35 @@ class CorsMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if ($request->getMethod() === 'OPTIONS') {
-            return response('', 204)
-                ->header('Access-Control-Allow-Origin', 'http://localhost:3000')
-                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-                ->header('Access-Control-Allow-Credentials', 'true');
+        $allowedOrigins = [
+            'http://localhost:3000',
+            'https://frontend-hjb781jyt-claireskylights-projects.vercel.app/', // Vercel URL 
+            
+        ];
+
+        $origin = $request->headers->get('Origin');
+        
+        if (in_array($origin, $allowedOrigins)) {
+            $headers = [
+                'Access-Control-Allow-Origin' => $origin,
+                'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
+                'Access-Control-Allow-Credentials' => 'true',
+            ];
+
+            if ($request->getMethod() === 'OPTIONS') {
+                return response('', 204)->withHeaders($headers);
+            }
+
+            $response = $next($request);
+            
+            foreach ($headers as $key => $value) {
+                $response->headers->set($key, $value);
+            }
+
+            return $response;
         }
 
-        $response = $next($request);
-
-        return $response
-            ->header('Access-Control-Allow-Origin', 'http://localhost:3000')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-            ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-            ->header('Access-Control-Allow-Credentials', 'true');
+        return $next($request);
     }
 }
