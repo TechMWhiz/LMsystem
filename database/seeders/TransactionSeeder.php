@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Transaction;
 use App\Models\User;
-use App\Models\Book;
+use App\Models\Books;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
@@ -16,14 +16,14 @@ class TransactionSeeder extends Seeder
     public function run(): void
     {
         $users = User::where('role', 'user')->get();
-        $books = Book::all();
+        $books = Books::all();
 
         // Create some sample transactions
         foreach ($users as $user) {
             // Create 2-3 borrow transactions per user
             $numBorrows = rand(2, 3);
             for ($i = 0; $i < $numBorrows; $i++) {
-                $book = $books->random();
+                $books = $books->random();
                 $borrowDate = Carbon::now()->subDays(rand(1, 30));
                 $dueDate = $borrowDate->copy()->addDays(14);
                 $returnDate = rand(0, 1) ? $dueDate->copy()->addDays(rand(1, 5)) : null;
@@ -32,7 +32,7 @@ class TransactionSeeder extends Seeder
 
                 Transaction::create([
                     'user_id' => $user->id,
-                    'book_id' => $book->id,
+                    'book_id' => $books->id,
                     'type' => 'borrow',
                     'status' => $returnDate ? 'completed' : 'active',
                     'borrow_date' => $borrowDate,
@@ -44,7 +44,7 @@ class TransactionSeeder extends Seeder
                 if ($returnDate) {
                     Transaction::create([
                         'user_id' => $user->id,
-                        'book_id' => $book->id,
+                        'book_id' => $books->id,
                         'type' => 'return',
                         'status' => 'completed',
                         'borrow_date' => $borrowDate,
