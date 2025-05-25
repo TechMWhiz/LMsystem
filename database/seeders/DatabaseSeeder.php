@@ -11,16 +11,12 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run(): void
-    {
-
-        $this->call(TransactionSeeder::class);
-        $this->call(BookSeeder::class);
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-    }
+   public function run(): void
+{
+    $this->call([
+        UserSeeder::class,
+        BookSeeder::class,
+        TransactionSeeder::class,
+    ]);
+}
 }

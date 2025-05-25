@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\BooksController;
+use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AdminController;
@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile/fine-history', [UserController::class, 'fineHistory']);
 
     // Books routes
-    Route::apiResource('books', BooksController::class);
+    Route::apiResource('books', BookController::class);
 
     // Transactions routes
     Route::apiResource('transactions', TransactionController::class);
@@ -50,9 +50,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin routes
     Route::middleware('admin')->group(function () {
         // Book management
-        Route::post('/books', [BooksController::class, 'store']);
-        Route::put('/books/{book}', [BooksController::class, 'update']);
-        Route::delete('/books/{book}', [BooksController::class, 'destroy']);
+        Route::post('/book', [BookController::class, 'store']);
+        Route::put('/book/{book}', [BookController::class, 'update']);
+        Route::delete('/book/{book}', [BookController::class, 'destroy']);
         
         // User management
         Route::get('/admin/users', [AdminController::class, 'users']);
