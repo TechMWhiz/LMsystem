@@ -6,7 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Http\\Controllers\\Api\\AdminController' => $baseDir . '/app/Http/Controllers/Api/AdminController.php',
     'App\\Http\\Controllers\\Api\\AuthController' => $baseDir . '/app/Http/Controllers/Api/AuthController.php',
     'App\\Http\\Controllers\\Api\\BooksController' => $baseDir . '/app/Http/Controllers/Api/BooksController.php',
     'App\\Http\\Controllers\\Api\\DashboardController' => $baseDir . '/app/Http/Controllers/Api/DashboardController.php',
@@ -14,6 +13,7 @@ return array(
     'App\\Http\\Controllers\\Api\\UserController' => $baseDir . '/app/Http/Controllers/Api/UserController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Middleware\\AdminMiddleware' => $baseDir . '/app/Http/Middleware/AdminMiddleware.php',
+    'App\\Http\\Middleware\\CorsMiddleware' => $baseDir . '/app/Http/Middleware/CorsMiddleware.php',
     'App\\Models\\Books' => $baseDir . '/app/Models/Books.php',
     'App\\Models\\Borrowing' => $baseDir . '/app/Models/Borrowing.php',
     'App\\Models\\Transaction' => $baseDir . '/app/Models/Transaction.php',
@@ -136,11 +136,12 @@ return array(
     'Cron\\HoursField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/HoursField.php',
     'Cron\\MinutesField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
     'Cron\\MonthField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
-    'Database\\Factories\\BookFactory' => $baseDir . '/database/factories/BookFactory.php',
+    'Database\\Factories\\BooksFactory' => $baseDir . '/database/factories/BooksFactory.php',
     'Database\\Factories\\UserFactory' => $baseDir . '/database/factories/UserFactory.php',
-    'Database\\Seeders\\BookSeeder' => $baseDir . '/database/seeders/BookSeeder.php',
+    'Database\\Seeders\\BooksSeeder' => $baseDir . '/database/seeders/BooksSeeder.php',
     'Database\\Seeders\\DatabaseSeeder' => $baseDir . '/database/seeders/DatabaseSeeder.php',
     'Database\\Seeders\\TransactionSeeder' => $baseDir . '/database/seeders/TransactionSeeder.php',
+    'Database\\Seeders\\UserSeeder' => $baseDir . '/database/seeders/UserSeeder.php',
     'DateError' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
     'DateException' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
     'DateInvalidOperationException' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
