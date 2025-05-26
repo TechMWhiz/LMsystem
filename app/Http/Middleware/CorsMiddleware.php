@@ -9,36 +9,23 @@ use Symfony\Component\HttpFoundation\Response;
 class CorsMiddleware
 {
     public function handle(Request $request, Closure $next)
-    {
-        $allowedOrigins = [
-            'http://localhost:3000',
-            'https://frontend-hjb781jyt-claireskylights-projects.vercel.app/', // Vercel URL 
-            
-        ];
+{
+    $allowedOrigins = [
+        'http://localhost:3000', // Local dev
+        'https://frontend-hjb781jyt-claireskylights-projects.vercel.app/', //  Vercel URL
+        'https://*.vercel.app' // All Vercel deployments
+    ];
 
-        $origin = $request->headers->get('Origin');
-        
-        if (in_array($origin, $allowedOrigins)) {
-            $headers = [
-                'Access-Control-Allow-Origin' => $origin,
-                'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
-                'Access-Control-Allow-Credentials' => 'true',
-            ];
+    $origin = $request->headers->get('Origin');
 
-            if ($request->getMethod() === 'OPTIONS') {
-                return response('', 204)->withHeaders($headers);
-            }
-
-            $response = $next($request);
-            
-            foreach ($headers as $key => $value) {
-                $response->headers->set($key, $value);
-            }
-
-            return $response;
-        }
-
-        return $next($request);
+    if (in_array($origin, $allowedOrigins)) {
+        return $next($request)
+            ->header('Access-Control-Allow-Origin', $origin)
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+            ->header('Access-Control-Allow-Credentials', 'true');
     }
+
+    return $next($request);
+}
 }
