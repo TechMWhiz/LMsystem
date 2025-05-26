@@ -13,7 +13,7 @@ class CorsMiddleware
     $allowedOrigins = [
         'http://localhost:3000', // Local dev
         'https://frontend-hjb781jyt-claireskylights-projects.vercel.app/', //  Vercel URL
-        'https://*.vercel.app' // All Vercel deployments
+        
     ];
 
     $origin = $request->headers->get('Origin');
