@@ -18,6 +18,11 @@ use App\Http\Controllers\Api\DashboardController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+// Dashboard stats (public)
+Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
+Route::get('/dashboard/recent-borrowings', [DashboardController::class, 'getRecentBorrowings']);
+Route::get('/dashboard/popular-books', [DashboardController::class, 'getPopularBooks']);
+
 //books
 Route::get('/books', [BooksController::class, 'index']);
 Route::apiResource('books', BooksController::class);
@@ -38,13 +43,6 @@ Route::get('/test-connection', function () {
         'message' => 'Backend is connected successfully!',
         'timestamp' => now()
     ]);
-});
-
-// Public dashboard stats
-Route::prefix('dashboard')->group(function () {
-    Route::get('/stats', [DashboardController::class, 'getStats']);
-    Route::get('/recent-borrowings', [DashboardController::class, 'getRecentBorrowings']);
-    Route::get('/popular-books', [DashboardController::class, 'getPopularBooks']);
 });
 
 // Protected routes for authenticated users

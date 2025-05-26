@@ -4,26 +4,73 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Books;
 use App\Models\User;
-use App\Models\Borrowing;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
 {
-    public function getStats()
+    public function getStats(): JsonResponse
     {
         try {
             $stats = [
                 'totalBooks' => Books::count(),
                 'totalUsers' => User::count(),
-                'activeLoans' => Borrowing::where('status', 'active')->count()
+                'activeLoans' => Transaction::where('status', 'active')->count()
             ];
 
-            return response()->json($stats);
+            return response()->json([
+                'status' => 'success',
+                'data' => $stats
+            ]);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to fetch dashboard statistics',
-                'message' => $e->getMessage()
+                'status' => 'error',
+                'message' => 'Failed to fetch dashboard statistics',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getRecentBorrowings(): JsonResponse
+    {
+        try {
+            $recentBorrowings = Transaction::with(['user', 'book'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $recentBorrowings
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to fetch recent borrowings',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getPopularBooks(): JsonResponse
+    {
+        try {
+            $popularBooks = Books::withCount('transactions')
+                ->orderBy('transactions_count', 'desc')
+                ->take(5)
+                ->get();
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $popularBooks
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to fetch popular books',
+                'error' => $e->getMessage()
             ], 500);
         }
     }
