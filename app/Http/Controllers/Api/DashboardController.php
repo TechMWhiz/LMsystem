@@ -16,8 +16,7 @@ class DashboardController extends Controller
         try {
             $stats = [
                 'totalBooks' => Books::count(),
-                'totalUsers' => User::count(),
-                'activeLoans' => Transaction::where('status', 'active')->count()
+                'totalUsers' => User::count()
             ];
 
             return response()->json([
