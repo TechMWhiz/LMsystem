@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -134,23 +135,49 @@ class UserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'sometimes|required|string|min:8',
+                'role' => 'sometimes|string|max:255',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $userData = [
+                'name' => $request->name,
+                'email' => $request->email,
+            ];
+
+            if ($request->has('password')) {
+                $userData['password'] = Hash::make($request->password);
+            } else {
+                // Generate a random password if none provided
+                $userData['password'] = Hash::make(Str::random(10));
+            }
+
+            if ($request->has('role')) {
+                $userData['role'] = $request->role;
+            }
+
+            $user = User::create($userData);
+
+            return response()->json([
+                'message' => 'User created successfully',
+                'data' => $user
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create user',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return response()->json(['data' => $user], 201);
     }
 
     /**
