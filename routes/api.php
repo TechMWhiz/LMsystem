@@ -29,6 +29,9 @@ Route::get('/users', function () {
         'data' => \App\Models\User::all()
     ]);
 });
+// Add full CRUD for users
+Route::apiResource('users', UserController::class);
+
 // Test connection
 Route::get('/test-connection', function () {
     return response()->json([
